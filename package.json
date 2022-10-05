@@ -1,0 +1,22 @@
+{
+  "name": "pws2022",
+  "version": "1.0.0",
+  "description": "* git clone git@gitlab.com:mariusz.jarocki/pws2022.git\r * cd pws2022\r * npm install\r * cd frontend\r * npm install\r * cd ..",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/mariusz.jarocki/pws2022.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/mariusz.jarocki/pws2022/issues"
+  },
+  "homepage": "https://gitlab.com/mariusz.jarocki/pws2022#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
