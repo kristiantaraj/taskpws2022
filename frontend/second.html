@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <title>pws2022</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="shortcut icon" href="img/favicon.png">
+    </head>
+    <body>
+        <div id="sec1">abc</div>
+        The second page served from pws2022
+        <div id="sec2"></div>
+        <script>
+            let n = 0
+            setInterval(() => {
+                document.getElementById('sec1').innerHTML = n
+                n++
+            }, 1000)
+
+            let xmlHttp = new XMLHttpRequest()
+            xmlHttp.open('GET', '/api', false)     
+            xmlHttp.send(null)
+            let data = JSON.parse(xmlHttp.responseText)
+            document.getElementById('sec2').innerHTML = data.yearOfBirth
+        </script>
+    </body>
+</html>
