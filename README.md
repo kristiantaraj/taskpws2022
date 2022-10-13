@@ -4,7 +4,7 @@
 
 #### Installation
 
-* git clone git@gitlab.com:mariusz.jarocki/pws2022.git
+* git clone https://gitlab.com:mariusz.jarocki/pws2022.git
 * cd pws2022
 * npm install
 * cd frontend
