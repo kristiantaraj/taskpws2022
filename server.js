@@ -17,12 +17,29 @@ let persons = [
 ]
 
 const api = (req, res) => {
-    console.log('api called', req.method, req.url, req.body)
+    console.log('api called', req.method, req.url, req.body, req.query)
+    let index = parseInt(req.query.index)
+    if(!isNaN(index) && (index < 0 || index >= persons.length)) {
+        res.status(400).json({ error: 'Wrong index' })
+        return    
+    }
     switch(req.method) {
         case 'GET':
-            break
+            if(isNaN(index)) break
+            res.json(persons[index])
+            return
         case 'POST':
             persons.push(req.body)
+            break
+        case 'PUT':
+            if(isNaN(index)) {
+                persons.push(req.body)
+            } else {
+                persons[index] = req.body
+            }
+            break
+        case 'DELETE':
+            persons.splice(index, 1)
             break
         default:
             res.status(405).json({ error: 'Method not implemented' })
