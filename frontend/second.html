@@ -20,7 +20,7 @@
             xmlHttp.open('GET', '/api', false)     
             xmlHttp.send(null)
             let data = JSON.parse(xmlHttp.responseText)
-            document.getElementById('sec2').innerHTML = data.yearOfBirth
+            document.getElementById('sec2').innerHTML = data[0].yearOfBirth
         </script>
     </body>
 </html>
