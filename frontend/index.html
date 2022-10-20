@@ -18,6 +18,11 @@
                     <td ng-bind="ctrl.person.lastName"></td>
                     <td ng-bind="ctrl.person.yearOfBirth"></td>
                 </tr>
+                <tr>
+                    <td><input type="text" class="form-control" ng-model="ctrl.person.firstName"/></td>
+                    <td><input type="text" class="form-control" ng-model="ctrl.person.lastName"/></td>
+                    <td><input type="number" class="form-control" ng-model="ctrl.person.yearOfBirth"/></td>
+                </tr>
             </table>
         </div>
         <script src="node_modules/angular/angular.min.js"></script>
