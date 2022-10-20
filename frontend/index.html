@@ -11,22 +11,30 @@
     </head>
     <body>
         <div class="container" ng-controller="MainCtrl as ctrl">
-            The first page served from pws2022!
+            <h3>The first page served from pws2022!</h3>
             <table class="table table-stripped">
+                <tr>
+                    <th>first name</th>
+                    <th>last name</th>
+                    <th>year of birth</th>
+                    <th>
+                        <button class="btn btn-default fa fa-refresh" ng-click="ctrl.refresh()"></button>
+                    </th>
+                </tr>
                 <tr ng-repeat="person in ctrl.persons">
                     <td ng-bind="person.firstName"></td>
                     <td ng-bind="person.lastName"></td>
                     <td ng-bind="person.yearOfBirth"></td>
+                    <td>
+                        <button class="btn btn-success fa fa-edit"></button>
+                        <button class="btn btn-danger fa fa-trash"></button> 
+                    </td>
                 </tr>
                 <tr>
-                    <td ng-bind="ctrl.person.firstName"></td>
-                    <td ng-bind="ctrl.person.lastName"></td>
-                    <td ng-bind="ctrl.person.yearOfBirth"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="form-control" ng-model="ctrl.person.firstName"/></td>
-                    <td><input type="text" class="form-control" ng-model="ctrl.person.lastName"/></td>
+                    <td><input type="text" class="form-control" placeholder="first name" ng-model="ctrl.person.firstName"/></td>
+                    <td><input type="text" class="form-control" placeholder="last name" ng-model="ctrl.person.lastName"/></td>
                     <td><input type="number" class="form-control" ng-model="ctrl.person.yearOfBirth"/></td>
+                    <td><button class="btn btn-primary fa fa-plus"></button></td>
                 </tr>
             </table>
         </div>

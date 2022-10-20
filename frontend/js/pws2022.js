@@ -7,15 +7,19 @@ app.controller('MainCtrl', [ '$http', function($http) {
     ctrl.persons = []
 
     ctrl.person = {
-        firstName: 'John',
-        lastName: 'Doe',
-        yearOfBirth: 1999
+        firstName: '',
+        lastName: '',
+        yearOfBirth: 2000
     } 
 
-    $http.get('/api').then(
-        function(res) {
-            ctrl.persons = res.data
-        },
-        function(err) {}
-    )
+    ctrl.refresh = function() {
+        $http.get('/api').then(
+            function(res) {
+                ctrl.persons = res.data
+            },
+            function(err) {}
+        )
+    }
+
+    ctrl.refresh()
 }])
