@@ -13,6 +13,11 @@
         <div class="container" ng-controller="MainCtrl as ctrl">
             The first page served from pws2022!
             <table class="table table-stripped">
+                <tr ng-repeat="person in ctrl.persons">
+                    <td ng-bind="person.firstName"></td>
+                    <td ng-bind="person.lastName"></td>
+                    <td ng-bind="person.yearOfBirth"></td>
+                </tr>
                 <tr>
                     <td ng-bind="ctrl.person.firstName"></td>
                     <td ng-bind="ctrl.person.lastName"></td>
