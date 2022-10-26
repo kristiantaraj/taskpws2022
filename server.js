@@ -35,9 +35,13 @@ const api = (req, res) => {
             if(isNaN(index)) {
                 persons.push(req.body)
             } else {
+                if(req.body.yearOfBirth < 100) {
+                    req.body.yearOfBirth = 1900 + req.body.yearOfBirth
+                }
                 persons[index] = req.body
             }
-            break
+            res.json(req.body)
+            return
         case 'DELETE':
             persons.splice(index, 1)
             break

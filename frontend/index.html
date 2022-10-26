@@ -22,20 +22,31 @@
                     </th>
                 </tr>
                 <tr ng-repeat="person in ctrl.persons">
-                    <td ng-bind="person.firstName"></td>
-                    <td ng-bind="person.lastName"></td>
-                    <td ng-bind="person.yearOfBirth"></td>
                     <td>
-                        <button class="btn btn-success fa fa-edit"></button>
-                        <button class="btn btn-danger fa fa-trash"></button> 
+                        <div ng-bind="person.firstName" ng-if="ctrl.editedRow!=$index"></div>
+                        <input class="form-control" ng-model="ctrl.person.firstName" ng-if="ctrl.editedRow==$index"/>
+                    </td>
+                    <td>
+                        <div ng-bind="person.lastName" ng-if="ctrl.editedRow!=$index"></div>
+                        <input class="form-control" ng-model="ctrl.person.lastName" ng-if="ctrl.editedRow==$index"/>
+                    </td>
+                    <td>
+                        <div ng-bind="person.yearOfBirth" ng-if="ctrl.editedRow!=$index"></div>
+                        <input type="number" class="form-control" ng-model="ctrl.person.yearOfBirth" ng-if="ctrl.editedRow==$index"/>    
+                    </td>
+                    <td>
+                        <button class="btn btn-success fa fa-edit" ng-click="ctrl.edit($index)" ng-disabled="ctrl.editedRow>=0" ng-if="ctrl.editedRow!=$index"></button>
+                        <button class="btn btn-success fa fa-check" ng-click="ctrl.confirm($index)" ng-if="ctrl.editedRow==$index"></button>
+                        <button class="btn btn-danger fa fa-trash" ng-disabled="ctrl.editedRow>=0" ng-if="ctrl.editedRow!=$index"></button>
+                        <button class="btn btn-danger fa fa-times" ng-click="ctrl.editedRow=-1" ng-if="ctrl.editedRow==$index"></button> 
                     </td>
                 </tr>
-                <tr>
+                <!--tr>
                     <td><input type="text" class="form-control" placeholder="first name" ng-model="ctrl.person.firstName"/></td>
                     <td><input type="text" class="form-control" placeholder="last name" ng-model="ctrl.person.lastName"/></td>
                     <td><input type="number" class="form-control" ng-model="ctrl.person.yearOfBirth"/></td>
                     <td><button class="btn btn-primary fa fa-plus"></button></td>
-                </tr>
+                </tr-->
             </table>
         </div>
         <script src="node_modules/angular/angular.min.js"></script>
