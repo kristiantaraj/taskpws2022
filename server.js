@@ -29,15 +29,19 @@ const api = (req, res) => {
             res.json(persons[index])
             return
         case 'POST':
+            if(req.body.yearOfBirth < 100) {
+                req.body.yearOfBirth = 1900 + req.body.yearOfBirth
+            }
             persons.push(req.body)
-            break
+            res.json(req.body)
+            return
         case 'PUT':
+            if(req.body.yearOfBirth < 100) {
+                req.body.yearOfBirth = 1900 + req.body.yearOfBirth
+            }
             if(isNaN(index)) {
                 persons.push(req.body)
             } else {
-                if(req.body.yearOfBirth < 100) {
-                    req.body.yearOfBirth = 1900 + req.body.yearOfBirth
-                }
                 persons[index] = req.body
             }
             res.json(req.body)

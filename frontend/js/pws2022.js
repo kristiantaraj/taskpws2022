@@ -6,12 +6,15 @@ app.controller('MainCtrl', [ '$http', function($http) {
 
     ctrl.editedRow = -1
     ctrl.persons = []
+    ctrl.person = {}
 
-    ctrl.person = {
+    const clearPerson = {
         firstName: '',
         lastName: '',
         yearOfBirth: 2000
-    } 
+    }
+
+    Object.assign(ctrl.person, clearPerson)
 
     ctrl.refresh = function() {
         $http.get('/api').then(
@@ -32,25 +35,36 @@ app.controller('MainCtrl', [ '$http', function($http) {
     ctrl.confirm = function(index) {
         $http.put('/api?index=' + index, ctrl.person).then(
             function(res) {
-                /*
-                ctrl.persons[index].firstName = ctrl.person.firstName
-                ctrl.persons[index].lastName = ctrl.person.lastName
-                ctrl.persons[index].yearOfBirth = ctrl.person.yearOfBirth
-                */
-
-               /*
-               ctrl.persons = res.data
-               */
-
-               /*
-               ctrl.persons[index] = res.data[index]
-               */
-
                ctrl.persons[index] = res.data
             },
             function(err) {}   
         )
         ctrl.editedRow = -1
+    }
+
+    ctrl.delete = function(index) {
+        $http.delete('/api?index=' + index).then(
+            function(res) {
+                ctrl.persons.splice(index, 1)
+            },
+            function(err) {}
+        )
+    }
+
+    ctrl.prepareToAdd = function() {
+        Object.assign(ctrl.person, clearPerson)
+        ctrl.editedRow=ctrl.persons.length
+    } 
+
+    ctrl.add = function() {
+        $http.post('/api', ctrl.person).then(
+            function(res) {
+                ctrl.persons.push(res.data)
+                ctrl.editedRow = -1
+                Object.assign(ctrl.person, clearPerson)
+            },
+            function(err) {}
+        )
     }
 
     ctrl.refresh()
