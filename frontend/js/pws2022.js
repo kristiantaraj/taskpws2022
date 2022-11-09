@@ -1,3 +1,5 @@
+const { Db, ObjectId } = require("mongodb")
+
 const app = angular.module('pws2022', [])
 
 app.controller('MainCtrl', [ '$http', function($http) {
@@ -43,9 +45,9 @@ app.controller('MainCtrl', [ '$http', function($http) {
     }
 
     ctrl.delete = function(index) {
-        $http.delete('/api?index=' + index).then(
+        $http.delete('/api?_id=' + index).then(
             function(res) {
-                ctrl.persons.splice(index, 1)
+                ctrl.refresh()
             },
             function(err) {}
         )

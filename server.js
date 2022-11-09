@@ -1,32 +1,32 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongodb = require('mongodb')
 
 // config
 const config = {
     appName: 'pws2022',
-    port: 5555
+    port: 5555,
+    dbUrl: 'mongodb://localhost:27017',
+    dbName: 'pws2022'
 }
 
 // express initialization
 const app = express()
 
-let persons = [
-    { firstName: 'Mariusz', lastName: 'Jarocki', yearOfBirth: 1969 },
-    { firstName: 'Wojciech', lastName: 'Horzelski', yearOfBirth: 1967 },
-    { firstName: 'Dariusz', lastName: 'Doliwa', yearOfBirth: 1967 }
-]
+// handle of database connection
+let db = null
 
 const api = (req, res) => {
     console.log('api called', req.method, req.url, req.body, req.query)
-    let index = parseInt(req.query.index)
-    if(!isNaN(index) && (index < 0 || index >= persons.length)) {
-        res.status(400).json({ error: 'Wrong index' })
-        return    
-    }
+    let _id = null
+    try { 
+        _id = req.query._id ? mongodb.ObjectId(req.query._id) : null
+    } catch(ex) {}
     switch(req.method) {
         case 'GET':
-            if(isNaN(index)) break
-            res.json(persons[index])
+            db.collection('persons').find({}).toArray((err, data) => {
+                res.json(data)
+            })        
             return
         case 'POST':
             if(req.body.yearOfBirth < 100) {
@@ -47,13 +47,14 @@ const api = (req, res) => {
             res.json(req.body)
             return
         case 'DELETE':
-            persons.splice(index, 1)
+            db.collection('persons').deleteOne({ _id: _id }, (err, deleted) => {
+                res.json(deleted)
+            })
             break
         default:
             res.status(405).json({ error: 'Method not implemented' })
             return
     }
-    res.json(persons)
 }
 
 // source of static content
@@ -75,4 +76,11 @@ app.use((err, req, res, nextTick) => {
 app.all('/api', api)
 
 // main process
-app.listen(config.port)
+mongodb.MongoClient.connect(config.dbUrl, { useUnifiedTopology: true }, (err, connection) => {
+    if(err) {
+        console.error('Connection to database cannot be established')
+        process.exit(0)
+    }
+    db = connection.db(config.dbName)
+    app.listen(config.port)        
+})
