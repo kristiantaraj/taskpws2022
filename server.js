@@ -82,5 +82,7 @@ mongodb.MongoClient.connect(config.dbUrl, { useUnifiedTopology: true }, (err, co
         process.exit(0)
     }
     db = connection.db(config.dbName)
+    console.log('Connection to database', config.dbName, 'on', config.dbUrl, 'established')
     app.listen(config.port)        
+    console.log('Backend is listening on port', config.port)
 })

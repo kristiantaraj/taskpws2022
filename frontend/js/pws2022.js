@@ -1,5 +1,3 @@
-const { Db, ObjectId } = require("mongodb")
-
 const app = angular.module('pws2022', [])
 
 app.controller('MainCtrl', [ '$http', function($http) {
