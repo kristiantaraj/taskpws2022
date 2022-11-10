@@ -38,7 +38,7 @@
                     </td>
                     <td>
                         <button class="btn btn-success fa fa-edit" ng-click="ctrl.edit($index)" ng-disabled="ctrl.editedRow>=0" ng-if="ctrl.editedRow!=$index"></button>
-                        <button class="btn btn-success fa fa-check" ng-click="ctrl.confirm($index)" ng-if="ctrl.editedRow==$index"></button>
+                        <button class="btn btn-success fa fa-check" ng-click="ctrl.confirm(person._id)" ng-if="ctrl.editedRow==$index"></button>
                         <button class="btn btn-danger fa fa-trash" ng-click="ctrl.delete(person._id)" ng-disabled="ctrl.editedRow>=0" ng-if="ctrl.editedRow!=$index"></button>
                         <button class="btn btn-danger fa fa-times" ng-click="ctrl.editedRow=-1" ng-if="ctrl.editedRow==$index"></button> 
                     </td>

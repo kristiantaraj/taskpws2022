@@ -1,13 +1,16 @@
+const fs = require('fs')
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongodb = require('mongodb')
 
 // config
-const config = {
-    appName: 'pws2022',
-    port: 5555,
-    dbUrl: 'mongodb://localhost:27017',
-    dbName: 'pws2022'
+let config = {}
+try {
+    config = JSON.parse(fs.readFileSync('config.json'))
+} catch(ex) {
+    console.error('Cannot read configuration!', ex.message)
+    process.exit(0)
 }
 
 // express initialization
@@ -81,7 +84,7 @@ mongodb.MongoClient.connect(config.dbUrl, { useUnifiedTopology: true }, (err, co
         process.exit(0)
     }
     db = connection.db(config.dbName)
-    console.log('Connection to database', config.dbName, 'on', config.dbUrl, 'established')
+    console.log('Connection to database', config.dbName, 'established')
     app.listen(config.port)        
     console.log('Backend is listening on port', config.port)
 })

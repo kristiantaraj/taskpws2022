@@ -10,6 +10,7 @@
 * cd frontend
 * npm install
 * cd ..
+* copy config-example.json to config.json and customize it
 
 #### Starting the server
 

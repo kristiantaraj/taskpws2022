@@ -32,18 +32,18 @@ app.controller('MainCtrl', [ '$http', function($http) {
         ctrl.person.yearOfBirth = ctrl.persons[index].yearOfBirth
     }
 
-    ctrl.confirm = function(index) {
-        $http.put('/api?index=' + index, ctrl.person).then(
+    ctrl.confirm = function(_id) {
+        $http.put('/api?_id=' + _id, ctrl.person).then(
             function(res) {
-               ctrl.persons[index] = res.data
+               ctrl.refresh()
             },
             function(err) {}   
         )
         ctrl.editedRow = -1
     }
 
-    ctrl.delete = function(index) {
-        $http.delete('/api?_id=' + index).then(
+    ctrl.delete = function(_id) {
+        $http.delete('/api?_id=' + _id).then(
             function(res) {
                 ctrl.refresh()
             },
@@ -59,7 +59,7 @@ app.controller('MainCtrl', [ '$http', function($http) {
     ctrl.add = function() {
         $http.post('/api', ctrl.person).then(
             function(res) {
-                ctrl.persons.push(res.data)
+                ctrl.refresh()
                 ctrl.editedRow = -1
                 Object.assign(ctrl.person, clearPerson)
             },
