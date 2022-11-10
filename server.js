@@ -27,33 +27,32 @@ const api = (req, res) => {
             db.collection('persons').find({}).toArray((err, data) => {
                 res.json(data)
             })        
-            return
+            break
         case 'POST':
             if(req.body.yearOfBirth < 100) {
                 req.body.yearOfBirth = 1900 + req.body.yearOfBirth
             }
-            persons.push(req.body)
-            res.json(req.body)
-            return
+            db.collection('persons').insertOne(req.body, (err, data) => {
+                res.json(data)    
+            })
+            break
         case 'PUT':
             if(req.body.yearOfBirth < 100) {
                 req.body.yearOfBirth = 1900 + req.body.yearOfBirth
             }
-            if(isNaN(index)) {
-                persons.push(req.body)
-            } else {
-                persons[index] = req.body
-            }
-            res.json(req.body)
-            return
+            delete req.body._id
+            db.collection('persons').findOneAndUpdate({ _id: _id }, { $set: req.body }, { returnDocument: 'after' }, (err, data) => {
+                res.json(data)    
+            })
+            break
         case 'DELETE':
-            db.collection('persons').deleteOne({ _id: _id }, (err, deleted) => {
-                res.json(deleted)
+            db.collection('persons').deleteOne({ _id: _id }, (err, data) => {
+                res.json(data)
             })
             break
         default:
             res.status(405).json({ error: 'Method not implemented' })
-            return
+            break
     }
 }
 
