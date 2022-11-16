@@ -1,4 +1,17 @@
-const app = angular.module('pws2022', [])
+const app = angular.module('pws2022', [ 'ngRoute' ])
+
+app.constant('routes', [
+    { route: '/', templateUrl: 'home.html', controller: 'HomeCtrl', controllerAs: 'ctrl' },
+    { route: '/persons', templateUrl: 'persons.html', controller: 'PersonsCtrl', controllerAs: 'ctrl' }
+])
+
+app.config(['$routeProvider', '$locationProvider', 'routes', function($routeProvider, $locationProvider, routes) {
+    $locationProvider.hashPrefix('')
+	for(let route of routes) {
+		$routeProvider.when(route.route, route)
+	}
+	$routeProvider.otherwise({ redirectTo: '/' })
+}])
 
 app.controller('MainCtrl', [ '$http', function($http) {
     console.log('MainCtrl controller started')
@@ -69,3 +82,11 @@ app.controller('MainCtrl', [ '$http', function($http) {
 
     ctrl.refresh()
 }])
+
+app.controller('HomeCtrl', [ function() {
+    console.log('HomeCtrl started')
+} ])
+
+app.controller('PersonsCtrl', [ function() {
+    console.log('PersonsCtrl started')
+} ])

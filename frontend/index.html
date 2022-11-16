@@ -12,6 +12,13 @@
     <body>
         <div class="container" ng-controller="MainCtrl as ctrl">
             <h3>The first page served from pws2022!</h3>
+
+            <ul>
+                <li><a href="#/">Home</a></li>
+                <li><a href="#/persons">Persons</a></li>
+            </ul>
+            <div style="border-style: dotted; padding: 8px;" ng-view></div>
+
             <table class="table table-stripped">
                 <tr>
                     <th>id</th>
@@ -57,6 +64,7 @@
             </table>
         </div>
         <script src="node_modules/angular/angular.min.js"></script>
+        <script src="node_modules/angular-route/angular-route.min.js"></script>
         <script src="js/pws2022.js"></script>
     </body>
 </html>
