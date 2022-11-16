@@ -1,8 +1,8 @@
-const app = angular.module('pws2022', [ 'ngRoute' ])
+const app = angular.module('pws2022', [ 'ngRoute', 'ngSanitize' ])
 
 app.constant('routes', [
-    { route: '/', templateUrl: 'home.html', controller: 'HomeCtrl', controllerAs: 'ctrl' },
-    { route: '/persons', templateUrl: 'persons.html', controller: 'PersonsCtrl', controllerAs: 'ctrl' }
+    { route: '/', templateUrl: 'home.html', controller: 'HomeCtrl', controllerAs: 'ctrl', menu: '<i class="fa fa-lg fa-home"></i>' },
+    { route: '/persons', templateUrl: 'persons.html', controller: 'PersonsCtrl', controllerAs: 'ctrl', menu: 'Persons' }
 ])
 
 app.config(['$routeProvider', '$locationProvider', 'routes', function($routeProvider, $locationProvider, routes) {
@@ -13,9 +13,30 @@ app.config(['$routeProvider', '$locationProvider', 'routes', function($routeProv
 	$routeProvider.otherwise({ redirectTo: '/' })
 }])
 
-app.controller('MainCtrl', [ '$http', function($http) {
-    console.log('MainCtrl controller started')
+app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', function($http, $location, $scope, routes) {
+    console.log('MainCtrl started')
     let ctrl = this
+
+    ctrl.menu = []
+
+    const rebuildMenu = function() {
+        ctrl.menu.length = 0
+		for(let route of routes) {
+            ctrl.menu.push({ route: route.route, title: route.menu })
+		}
+        $location.path("/")
+    }
+
+    ctrl.isCollapsed = true
+    $scope.$on('$routeChangeSuccess', function () {
+        ctrl.isCollapsed = true
+    })
+    
+    ctrl.navClass = function(page) {
+        return page === $location.path() ? 'active' : ''
+    }     
+
+    rebuildMenu()
 
     ctrl.editedRow = -1
     ctrl.persons = []
@@ -82,11 +103,3 @@ app.controller('MainCtrl', [ '$http', function($http) {
 
     ctrl.refresh()
 }])
-
-app.controller('HomeCtrl', [ function() {
-    console.log('HomeCtrl started')
-} ])
-
-app.controller('PersonsCtrl', [ function() {
-    console.log('PersonsCtrl started')
-} ])
