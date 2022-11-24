@@ -1,4 +1,4 @@
-const app = angular.module('pws2022', [ 'ngRoute', 'ngSanitize' ])
+const app = angular.module('pws2022', [ 'ngRoute', 'ngSanitize', 'ngAnimate', 'httpLoadingInterceptor', 'cogAlert' ])
 
 app.constant('routes', [
     { route: '/', templateUrl: 'home.html', controller: 'HomeCtrl', controllerAs: 'ctrl', menu: '<i class="fa fa-lg fa-home"></i>' },
@@ -14,7 +14,7 @@ app.config(['$routeProvider', '$locationProvider', 'routes', function($routeProv
 	$routeProvider.otherwise({ redirectTo: '/' })
 }])
 
-app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', function($http, $location, $scope, routes) {
+app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', 'Alerting', function($http, $location, $scope, routes, Alerting) {
     console.log('MainCtrl started')
     let ctrl = this
 
@@ -28,8 +28,11 @@ app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', function(
             function(res) {
                 ctrl.loggedUser = res.data
                 rebuildMenu()
+                Alerting.addSuccess('Welcome, ' + ctrl.loggedUser.username, 'title', 'text')
             },
-            function(err) { console.error('Login failed') }
+            function(err) {
+                Alerting.addDanger('Login failed')
+            }
         )
     }
 
@@ -38,8 +41,9 @@ app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', function(
             function(res) {
                 ctrl.loggedUser = res.data
                 rebuildMenu()
+                Alerting.addSuccess('You are logged out')
             },
-            function(err) { console.error('Logout failed') }
+            function(err) {}
         )
     }
 
@@ -71,6 +75,6 @@ app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', function(
             ctrl.loggedUser = res.data
             rebuildMenu()
         },
-        function(err) { console.error('Whoami failed') }
+        function(err) { Alerting.addDanger('Whoami failed, cannot continue') }
     )    
 }])
