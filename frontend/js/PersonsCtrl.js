@@ -9,7 +9,8 @@ app.controller('PersonsCtrl', [ '$http', function($http) {
     const clearPerson = {
         firstName: '',
         lastName: '',
-        yearOfBirth: 2000
+        yearOfBirth: 2000,
+        email: ''
     }
 
     Object.assign(ctrl.person, clearPerson)
@@ -28,6 +29,7 @@ app.controller('PersonsCtrl', [ '$http', function($http) {
         ctrl.person.firstName = ctrl.persons[index].firstName
         ctrl.person.lastName = ctrl.persons[index].lastName
         ctrl.person.yearOfBirth = ctrl.persons[index].yearOfBirth
+        ctrl.person.email = ctrl.persons[index].email
     }
 
     ctrl.confirm = function(_id) {

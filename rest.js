@@ -1,7 +1,6 @@
 const db = require('./db')
 
 module.exports = (req, res) => {
-    console.log('api called', req.method, req.url, req.body, req.query)
     let _id = null
     try { 
         _id = req.query._id ? db.ObjectId(req.query._id) : null

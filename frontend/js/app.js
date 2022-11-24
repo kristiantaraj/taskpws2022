@@ -18,6 +18,33 @@ app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', function(
     console.log('MainCtrl started')
     let ctrl = this
 
+    // auth handling
+
+    ctrl.loggedUser = null
+    ctrl.creds = { username: '', password: '' }
+
+    ctrl.doLogin = function() {
+        $http.post('/auth', ctrl.creds).then(
+            function(res) {
+                ctrl.loggedUser = res.data
+                rebuildMenu()
+            },
+            function(err) { console.error('Login failed') }
+        )
+    }
+
+    ctrl.doLogout = function() {
+        $http.delete('/auth').then(
+            function(res) {
+                ctrl.loggedUser = res.data
+                rebuildMenu()
+            },
+            function(err) { console.error('Logout failed') }
+        )
+    }
+
+    // menu handling
+
     ctrl.menu = []
 
     const rebuildMenu = function() {
@@ -37,5 +64,13 @@ app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', function(
         return page === $location.path() ? 'active' : ''
     }     
 
-    rebuildMenu()
+    // whoami - once on the start
+    
+    $http.get('/auth').then(
+        function(res) {
+            ctrl.loggedUser = res.data
+            rebuildMenu()
+        },
+        function(err) { console.error('Whoami failed') }
+    )    
 }])

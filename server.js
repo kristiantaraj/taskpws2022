@@ -1,6 +1,7 @@
 const fs = require('fs')
 
 const express = require('express')
+const morgan = require('morgan')
 const expressSession = require('express-session')
 const bodyParser = require('body-parser')
 const passport = require('passport')
@@ -21,6 +22,7 @@ try {
 
 // express initialization
 const app = express()
+app.use(morgan('tiny'))
 
 // source of static content
 app.use(express.static('frontend'))
@@ -29,7 +31,6 @@ app.use(express.static('frontend'))
 app.use(bodyParser.json())
 
 // authorization middleware
-
 app.use(expressSession({ secret: config.appName, resave: false , saveUninitialized: true }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -43,7 +44,6 @@ app.post('/auth', passport.authenticate('json', { failWithError: true }), auth.l
 app.delete('/auth', auth.logout)
 
 // handle errors on body parser
-/*
 app.use((err, req, res, nextTick) => {
     if(err) {
         res.status(400).json({ error: err.type })
@@ -51,11 +51,9 @@ app.use((err, req, res, nextTick) => {
         nextTick()
     }
 })
-*/
 
 // special endpoint for data
 app.all('/api', rest)
-// app.all('/api', auth.checkAuthenticated, api)
 
 // main process
 db.init(config, () => {

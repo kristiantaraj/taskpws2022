@@ -4,6 +4,7 @@
         <th>first name</th>
         <th>last name</th>
         <th>year of birth</th>
+        <th>email</th>
         <th>
             <button class="btn btn-default fa fa-refresh" ng-click="ctrl.refresh()"></button>
         </th>
@@ -23,6 +24,10 @@
             <input type="number" class="form-control" ng-model="ctrl.person.yearOfBirth" ng-if="ctrl.editedRow==$index"/>    
         </td>
         <td>
+            <div ng-bind="person.email" ng-if="ctrl.editedRow!=$index"></div>
+            <input type="text" class="form-control" ng-model="ctrl.person.email" ng-if="ctrl.editedRow==$index"/>    
+        </td>
+        <td nowrap>
             <button class="btn btn-success fa fa-edit" ng-click="ctrl.edit($index)" ng-disabled="ctrl.editedRow>=0" ng-if="ctrl.editedRow!=$index"></button>
             <button class="btn btn-success fa fa-check" ng-click="ctrl.confirm(person._id)" ng-if="ctrl.editedRow==$index"></button>
             <button class="btn btn-danger fa fa-trash" ng-click="ctrl.delete(person._id)" ng-disabled="ctrl.editedRow>=0" ng-if="ctrl.editedRow!=$index"></button>
@@ -34,7 +39,8 @@
         <td><input type="text" class="form-control" placeholder="first name" ng-model="ctrl.person.firstName" ng-if="ctrl.editedRow==ctrl.persons.length"/></td>
         <td><input type="text" class="form-control" placeholder="last name" ng-model="ctrl.person.lastName" ng-if="ctrl.editedRow==ctrl.persons.length"/></td>
         <td><input type="number" class="form-control" ng-model="ctrl.person.yearOfBirth" ng-if="ctrl.editedRow==ctrl.persons.length"/></td>
-        <td>
+        <td><input type="text" class="form-control" ng-model="ctrl.person.email" ng-if="ctrl.editedRow==ctrl.persons.length"/></td>
+        <td nowrap>
             <button class="btn btn-primary fa fa-plus" ng-if="ctrl.editedRow!=ctrl.persons.length" ng-disabled="ctrl.editedRow!=-1" ng-click="ctrl.prepareToAdd()"></button>
             <button class="btn btn-success fa fa-plus" ng-if="ctrl.editedRow==ctrl.persons.length" ng-click="ctrl.add()"></button>
             <button class="btn btn-danger fa fa-times" ng-if="ctrl.editedRow==ctrl.persons.length" ng-click="ctrl.editedRow=-1"></button> 
