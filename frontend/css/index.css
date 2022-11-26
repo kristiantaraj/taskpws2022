@@ -2,20 +2,19 @@ body {
     margin-top: 5em;
 }
 
-.cog-header {
-    width:100%;
-    padding-bottom:35px;
-    background: linear-gradient(#232323, #898989);
-    color:#efefef;
-    margin-bottom:15px;
-}
-
 .alert.ng-enter {
-    -webkit-animation: flipInY 1.5s;
-    animation: flipInY 1.5s;
+    -webkit-animation: fadeInRight 0.5s;
+    animation: fadeInRight 0.5s;
 }
 
 .alert.ng-leave {
-    -webkit-animation: flipOutY 0.5s;
-    animation: flipOutY 0.5s
+    -webkit-animation: fadeOutRight 0.5s;
+    animation: fadeOutRight 0.5s
+}
+
+.alert-box {
+    width: 25%;
+    position: relative;
+    float: right;
+    background-color: transparent;
 }

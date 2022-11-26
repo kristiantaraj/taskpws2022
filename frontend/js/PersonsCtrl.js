@@ -1,4 +1,4 @@
-app.controller('PersonsCtrl', [ '$http', function($http) {
+app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, Alerting, common) {
     console.log('PersonsCtrl started')
     let ctrl = this
 
@@ -36,19 +36,26 @@ app.controller('PersonsCtrl', [ '$http', function($http) {
         $http.put('/api?_id=' + _id, ctrl.person).then(
             function(res) {
                ctrl.refresh()
+               Alerting.addSuccess('Person saved')
             },
             function(err) {}   
         )
         ctrl.editedRow = -1
     }
 
-    ctrl.delete = function(_id) {
-        $http.delete('/api?_id=' + _id).then(
-            function(res) {
-                ctrl.refresh()
-            },
-            function(err) {}
-        )
+    ctrl.delete = function(index) {
+        common.simpleDialog('Delete person?', 'Are you sure to delete "' + ctrl.persons[index].firstName + ' ' + ctrl.persons[index].lastName + '"?',
+            true, true, function(res) {
+                if(res) {
+                    let _id = ctrl.persons[index]._id
+                    $http.delete('/api?_id=' + _id).then(
+                        function(res) {
+                            ctrl.refresh()
+                        },
+                        function(err) {}
+                    )          
+                }
+            })
     }
 
     ctrl.prepareToAdd = function() {

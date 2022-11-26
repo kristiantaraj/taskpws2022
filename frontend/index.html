@@ -22,8 +22,6 @@
             <!-- xhr spinner -->
             <div id="httpLoadingSpinner" http-loading-interceptor-spinner></div>
 
-            <cog-alerts></cog-alerts>
-
             <!-- navigation bar -->
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-if="ctrl.loggedUser">
                 <div class="container-fluid">
@@ -66,6 +64,9 @@
                 </div>
             </nav>
 
+            <!-- alerts -->
+            <cog-alerts></cog-alerts>
+
             <!-- workplace -->
             <div ng-view></div>
 
@@ -74,6 +75,7 @@
         <script src="node_modules/angular-route/angular-route.min.js"></script>
         <script src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
         <script src="node_modules/angular-animate/angular-animate.min.js"></script>
+        <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
         <script src="node_modules/angular-http-loading-interceptor/angular-http-loading-interceptor.js"></script>
         <script src="node_modules/angular-cog-alert/dist/angular-cog-alert.min.js"></script>
 
