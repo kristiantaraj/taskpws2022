@@ -54,7 +54,9 @@ app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', 'Alerting
     const rebuildMenu = function() {
         ctrl.menu.length = 0
 		for(let route of routes) {
-            ctrl.menu.push({ route: route.route, title: route.menu })
+            if(route.route == '/' || ctrl.loggedUser.username) {
+                ctrl.menu.push({ route: route.route, title: route.menu })
+            }
 		}
         $location.path("/")
     }
