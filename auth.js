@@ -2,7 +2,7 @@ const db = require('./db')
 
 const auth = module.exports = {
     checkCredentials: (username, password, nextTick) => {
-        db.persons.findOne({ email: username, password: password }, (err, user) => {
+        db.authData.findOne({ email: username, password: password }, (err, user) => {
             if(err || !user) {
                 return nextTick(null, false)
             } else {
@@ -16,7 +16,7 @@ const auth = module.exports = {
     },
     serialize: (user, nextTick) => { nextTick(null, user.email) },
     deserialize: (username, nextTick) => {
-        db.persons.findOne({ email: username }, (err, user) => {
+        db.authData.findOne({ email: username }, (err, user) => {
             if(err || !user) {
                 nextTick('No such user', null)
             } else {

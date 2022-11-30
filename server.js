@@ -53,7 +53,7 @@ app.use((err, req, res, nextTick) => {
 })
 
 // special endpoint for data
-app.all('/api', rest)
+app.all('/api/:collection', auth.checkAuthenticated, rest)
 
 // main process
 db.init(config, () => {

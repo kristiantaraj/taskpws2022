@@ -2,6 +2,8 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
     console.log('PersonsCtrl started')
     let ctrl = this
 
+    const endpoint = '/api/persons'
+
     ctrl.editedRow = -1
     ctrl.persons = []
     ctrl.person = {}
@@ -16,7 +18,7 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
     Object.assign(ctrl.person, clearPerson)
 
     ctrl.refresh = function() {
-        $http.get('/api').then(
+        $http.get(endpoint).then(
             function(res) {
                 ctrl.persons = res.data
             },
@@ -33,7 +35,7 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
     }
 
     ctrl.confirm = function(_id) {
-        $http.put('/api?_id=' + _id, ctrl.person).then(
+        $http.put(endpoint + '?_id=' + _id, ctrl.person).then(
             function(res) {
                ctrl.refresh()
                Alerting.addSuccess('Person saved')
@@ -48,7 +50,7 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
             true, true, function(res) {
                 if(res) {
                     let _id = ctrl.persons[index]._id
-                    $http.delete('/api?_id=' + _id).then(
+                    $http.delete(endpoint + '?_id=' + _id).then(
                         function(res) {
                             ctrl.refresh()
                         },
@@ -64,7 +66,7 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
     } 
 
     ctrl.add = function() {
-        $http.post('/api', ctrl.person).then(
+        $http.post(endpoint, ctrl.person).then(
             function(res) {
                 ctrl.refresh()
                 ctrl.editedRow = -1

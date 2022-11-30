@@ -7,12 +7,13 @@ const db = module.exports = {
                 console.error('Connection to database cannot be established')
                 process.exit(0)
             }
-            let connectionDb = connection.db(config.dbName)
-            db.persons = connectionDb.collection('persons')
+            db.connection = connection.db(config.dbName)
+            db.authData = db.connection.collection('persons')
             console.log('Connection to database', config.dbName, 'established')
             nextTick()
         })
     },
     ObjectId: mongodb.ObjectId,
-    persons: null
+    connection: null,
+    authData: null 
 }
