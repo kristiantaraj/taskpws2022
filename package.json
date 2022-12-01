@@ -17,6 +17,8 @@
   },
   "homepage": "https://gitlab.com/mariusz.jarocki/pws2022#readme",
   "dependencies": {
+    "ajv": "^8.11.2",
+    "ajv-formats": "^2.1.1",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
     "mongodb": "^4.11.0",
