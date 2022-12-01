@@ -1,6 +1,13 @@
 const db = require('./db')
 const dataConfig = require('./dataConfig')
 
+const getAggregation = (collectionName) => {
+    if(dataConfig[collectionName] && dataConfig[collectionName].aggregation) {
+        return dataConfig[collectionName].aggregation
+    }
+    return []
+}
+
 const alterInputData = (collectionName, body) => {
     if(dataConfig[collectionName] && dataConfig[collectionName].prepareData) {
         let err = dataConfig[collectionName].prepareData(body)
@@ -19,7 +26,7 @@ module.exports = (req, res) => {
     let err = null
     switch(req.method) {
         case 'GET':
-            collection.find({}).toArray((err, data) => {
+            collection.aggregate(getAggregation(collectionName)).toArray((err, data) => {
                 res.json(data)
             })        
             break

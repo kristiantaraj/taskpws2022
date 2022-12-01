@@ -4,6 +4,10 @@ const ajvFormats = require('ajv-formats')
 const dataConfig = module.exports = {
 
     persons: {
+        aggregation: [
+            { $project: { password: false } },
+            { $sort: { lastName: 1, firstName: 1 } }
+        ],
         schema: {
             type: 'object',
             properties: {
@@ -27,7 +31,12 @@ const dataConfig = module.exports = {
     },
 
     projects: {
-
+        aggregation: [
+            { $sort: { name: 1 } },
+            { $lookup: { from: "persons", localField: "manager", foreignField: "_id", as: "manager" } },
+            { $unwind: { path: "$manager", preserveNullAndEmptyArrays: true } },
+            { $project: { "manager.password": false } }
+          ]
     }
 }
 
