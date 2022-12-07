@@ -53,7 +53,7 @@ const generatePersons = (amount, nextTick) => {
 
 db.init(config, () => {
 
-    generatePersons(999, (persons) => {
+    generatePersons(9999, (persons) => {
         persons.unshift({
             firstName: 'Admin',
             lastName: 'Istrator',

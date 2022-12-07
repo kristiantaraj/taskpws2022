@@ -7,6 +7,8 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
     ctrl.editedRow = -1
     ctrl.persons = []
     ctrl.person = {}
+    ctrl.limit = 10
+    ctrl.filter = ''
 
     const clearPerson = {
         firstName: '',
@@ -18,7 +20,7 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
     Object.assign(ctrl.person, clearPerson)
 
     ctrl.refresh = function() {
-        $http.get(endpoint).then(
+        $http.get(endpoint + '?limit=' + ctrl.limit + '&filter=' + ctrl.filter).then(
             function(res) {
                 ctrl.persons = res.data
             },

@@ -3,6 +3,17 @@
 </h1>
 
 <div>
+    <form class="form-inline">
+        <i class="fa fa-hashtag"></i>
+        <input style="width: 10%" class="form-control" type="number" ng-model="ctrl.limit" ng-change="ctrl.refresh()"/>
+        <i class="fa fa-search"></i>
+        <input style="width: 20%" class="form-control" type="text" ng-model="ctrl.filter" ng-change="ctrl.refresh()"/>
+    </form>
+</div>
+
+<br/><br/>
+
+<div>
     <table class="table table-stripped">
         <tr>
             <th>id</th>

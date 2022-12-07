@@ -23,10 +23,31 @@ module.exports = (req, res) => {
     try { 
         _id = req.query._id ? db.ObjectId(req.query._id) : null
     } catch(ex) {}
-    let err = null
+    let err = null, aggr = []
     switch(req.method) {
         case 'GET':
-            collection.aggregate(getAggregation(collectionName)).toArray((err, data) => {
+            aggr.length = 0
+            aggr = aggr.concat(getAggregation(collectionName))
+
+            let filter = req.query.filter
+            if(filter) {
+                aggr.push({
+                    $match: { $or: [
+                        { firstName: { $regex: '.*' + filter + '.*', $options: 'i' }},
+                        { lastName: { $regex: '.*' + filter + '.*', $options: 'i' }}
+                    ]}
+                })
+            }
+
+            let limit = req.query.limit
+            if(limit) {
+                limit = parseInt(limit)
+                if(limit > 0) {
+                    aggr.push({ $limit: limit })
+                }
+            }
+
+            collection.aggregate(aggr).toArray((err, data) => {
                 res.json(data)
             })        
             break
