@@ -1,10 +1,10 @@
 {
   "name": "pws2022",
   "version": "1.0.0",
-  "description": "* git clone git@gitlab.com:mariusz.jarocki/pws2022.git\r * cd pws2022\r * npm install\r * cd frontend\r * npm install\r * cd ..",
+  "description": "Programming Web Services 2022",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "cd frontend && npm install"
   },
   "repository": {
     "type": "git",

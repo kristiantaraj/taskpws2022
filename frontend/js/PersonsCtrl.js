@@ -1,4 +1,4 @@
-app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, Alerting, common) {
+app.controller('PersonsCtrl', [ '$http', 'common', function($http, common) {
     console.log('PersonsCtrl started')
     let ctrl = this
 
@@ -7,7 +7,7 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
     ctrl.editedRow = -1
     ctrl.persons = []
     ctrl.person = {}
-    ctrl.limit = 10
+    ctrl.limit = 5
     ctrl.filter = ''
 
     const clearPerson = {
@@ -19,10 +19,13 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
 
     Object.assign(ctrl.person, clearPerson)
 
-    ctrl.refresh = function() {
+    ctrl.refresh = function(withAlert = false) {
         $http.get(endpoint + '?limit=' + ctrl.limit + '&filter=' + ctrl.filter).then(
             function(res) {
                 ctrl.persons = res.data
+                if(withAlert) {
+                    common.alert('View refreshed, ' + ctrl.persons.length + ' persons displayed')
+                }
             },
             function(err) {}
         )
@@ -40,7 +43,7 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
         $http.put(endpoint + '?_id=' + _id, ctrl.person).then(
             function(res) {
                ctrl.refresh()
-               Alerting.addSuccess('Person saved')
+               common.alert('Person saved')
             },
             function(err) {}   
         )
@@ -54,6 +57,7 @@ app.controller('PersonsCtrl', [ '$http', 'Alerting', 'common', function($http, A
                     let _id = ctrl.persons[index]._id
                     $http.delete(endpoint + '?_id=' + _id).then(
                         function(res) {
+                            common.alert('Person deleted')
                             ctrl.refresh()
                         },
                         function(err) {}

@@ -1,5 +1,7 @@
 const app = angular.module('pws2022', [ 'ngRoute', 'ngSanitize', 'ngAnimate', 'ui.bootstrap', 'httpLoadingInterceptor', 'cogAlert' ])
 
+// router
+
 app.constant('routes', [
     { route: '/', templateUrl: 'home.html', controller: 'HomeCtrl', controllerAs: 'ctrl', menu: '<i class="fa fa-lg fa-home"></i>' },
     { route: '/example', templateUrl: 'example.html', controller: 'ExampleCtrl', controllerAs: 'ctrl', menu: 'Example' },
@@ -14,74 +16,9 @@ app.config(['$routeProvider', '$locationProvider', 'routes', function($routeProv
 	$routeProvider.otherwise({ redirectTo: '/' })
 }])
 
-app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', 'Alerting', function($http, $location, $scope, routes, Alerting) {
-    console.log('MainCtrl started')
-    let ctrl = this
+// common functions
 
-    // auth handling
-
-    ctrl.loggedUser = null
-    ctrl.creds = { username: '', password: '' }
-
-    ctrl.doLogin = function() {
-        $http.post('/auth', ctrl.creds).then(
-            function(res) {
-                ctrl.loggedUser = res.data
-                rebuildMenu()
-                Alerting.addSuccess('Welcome, ' + ctrl.loggedUser.username)
-            },
-            function(err) {
-                Alerting.addDanger('Login failed')
-            }
-        )
-    }
-
-    ctrl.doLogout = function() {
-        $http.delete('/auth').then(
-            function(res) {
-                ctrl.loggedUser = res.data
-                rebuildMenu()
-                Alerting.addSuccess('You are logged out')
-            },
-            function(err) {}
-        )
-    }
-
-    // menu handling
-
-    ctrl.menu = []
-
-    const rebuildMenu = function() {
-        ctrl.menu.length = 0
-		for(let route of routes) {
-            if(route.route == '/' || ctrl.loggedUser.username) {
-                ctrl.menu.push({ route: route.route, title: route.menu })
-            }
-		}
-        $location.path("/")
-    }
-
-    ctrl.isCollapsed = true
-    $scope.$on('$routeChangeSuccess', function () {
-        ctrl.isCollapsed = true
-    })
-    
-    ctrl.navClass = function(page) {
-        return page === $location.path() ? 'active' : ''
-    }     
-
-    // whoami - once on the start
-    
-    $http.get('/auth').then(
-        function(res) {
-            ctrl.loggedUser = res.data
-            rebuildMenu()
-        },
-        function(err) { Alerting.addDanger('Whoami failed, cannot continue') }
-    )    
-}])
-
-app.service('common', [ '$uibModal', function($uibModal) {
+app.service('common', [ '$uibModal', 'Alerting', function($uibModal, Alerting) {
     let common = this
 
     // general modal dialog
@@ -126,4 +63,77 @@ app.service('common', [ '$uibModal', function($uibModal) {
         } ], options, nextTick)
     }
 
+    common.alert = function(text, type = 'success') {
+        Alerting.addAlert(type, text)
+        console.log('alert[' + type + ']:', text)
+    }
+}])
+
+// main controller
+
+app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', 'common', function($http, $location, $scope, routes, common) {
+    console.log('MainCtrl started')
+    let ctrl = this
+
+    // auth handling
+
+    ctrl.loggedUser = null
+    ctrl.creds = { username: '', password: '' }
+
+    ctrl.doLogin = function() {
+        $http.post('/auth', ctrl.creds).then(
+            function(res) {
+                ctrl.loggedUser = res.data
+                rebuildMenu()
+                common.alert('Welcome, ' + ctrl.loggedUser.username)
+            },
+            function(err) {
+                common.alert('Login failed', 'danger')
+            }
+        )
+    }
+
+    ctrl.doLogout = function() {
+        $http.delete('/auth').then(
+            function(res) {
+                ctrl.loggedUser = res.data
+                rebuildMenu()
+                common.alert('You are logged out')
+            },
+            function(err) {}
+        )
+    }
+
+    // menu handling
+
+    ctrl.menu = []
+
+    const rebuildMenu = function() {
+        ctrl.menu.length = 0
+		for(let route of routes) {
+            if(route.route == '/' || ctrl.loggedUser.username) {
+                ctrl.menu.push({ route: route.route, title: route.menu })
+            }
+		}
+        $location.path("/")
+    }
+
+    ctrl.isCollapsed = true
+    $scope.$on('$routeChangeSuccess', function () {
+        ctrl.isCollapsed = true
+    })
+    
+    ctrl.navClass = function(page) {
+        return page === $location.path() ? 'active' : ''
+    }     
+
+    // whoami - once on the start
+    
+    $http.get('/auth').then(
+        function(res) {
+            ctrl.loggedUser = res.data
+            rebuildMenu()
+        },
+        function(err) { Alerting.addDanger('Whoami failed, cannot continue') }
+    )    
 }])
