@@ -27,7 +27,9 @@ app.controller('PersonsCtrl', [ '$http', 'common', function($http, common) {
                     common.alert('View refreshed, ' + ctrl.persons.length + ' persons displayed')
                 }
             },
-            function(err) {}
+            function(err) {
+                common.alert('Error: ' + err.data.error, 'danger')
+            }
         )
     }
 
@@ -43,9 +45,11 @@ app.controller('PersonsCtrl', [ '$http', 'common', function($http, common) {
         $http.put(endpoint + '?_id=' + _id, ctrl.person).then(
             function(res) {
                ctrl.refresh()
-               common.alert('Person saved')
+               common.alert('Person updated')
             },
-            function(err) {}   
+            function(err) {
+                common.alert('Person cannot be updated: ' + err.data.error, 'danger')
+            }   
         )
         ctrl.editedRow = -1
     }
@@ -60,7 +64,9 @@ app.controller('PersonsCtrl', [ '$http', 'common', function($http, common) {
                             common.alert('Person deleted')
                             ctrl.refresh()
                         },
-                        function(err) {}
+                        function(err) {
+                            common.alert('Person cannot be deleted: ' + err.data.error, 'danger')
+                        }
                     )          
                 }
             })
@@ -77,8 +83,11 @@ app.controller('PersonsCtrl', [ '$http', 'common', function($http, common) {
                 ctrl.refresh()
                 ctrl.editedRow = -1
                 Object.assign(ctrl.person, clearPerson)
+                common.alert('Person added')
             },
-            function(err) {}
+            function(err) {
+                common.alert('Person cannot be added: ' + err.data.error, 'danger')
+            }
         )
     }
 
