@@ -4,8 +4,8 @@ const app = angular.module('pws2022', [ 'ngRoute', 'ngSanitize', 'ngAnimate', 'u
 
 app.constant('routes', [
     { route: '/', templateUrl: 'home.html', controller: 'HomeCtrl', controllerAs: 'ctrl', menu: '<i class="fa fa-lg fa-home"></i>' },
-    { route: '/example', templateUrl: 'example.html', controller: 'ExampleCtrl', controllerAs: 'ctrl', menu: 'Example' },
-    { route: '/persons', templateUrl: 'persons.html', controller: 'PersonsCtrl', controllerAs: 'ctrl', menu: 'Persons' }
+    { route: '/persons', templateUrl: 'persons.html', controller: 'PersonsCtrl', controllerAs: 'ctrl', menu: 'Persons' },
+    { route: '/projects', templateUrl: 'projects.html', controller: 'ProjectsCtrl', controllerAs: 'ctrl', menu: 'Projects' }
 ])
 
 app.config(['$routeProvider', '$locationProvider', 'routes', function($routeProvider, $locationProvider, routes) {

@@ -8,6 +8,12 @@ const dataConfig = module.exports = {
             { $project: { password: false } },
             { $sort: { lastName: 1, firstName: 1 } }
         ],
+        filtering: (filter) => { return {
+            $match: { $or: [
+                { firstName: { $regex: '.*' + filter + '.*', $options: 'i' }},
+                { lastName: { $regex: '.*' + filter + '.*', $options: 'i' }}
+            ]}}
+        },
         schema: {
             type: 'object',
             properties: {
@@ -36,7 +42,25 @@ const dataConfig = module.exports = {
             { $lookup: { from: "persons", localField: "manager", foreignField: "_id", as: "manager" } },
             { $unwind: { path: "$manager", preserveNullAndEmptyArrays: true } },
             { $project: { "manager.password": false } }
-          ]
+          ],
+          filtering: (filter) => {
+            return { $match: 
+                { name: { $regex: '.*' + filter + '.*', $options: 'i' }}
+            }
+        },
+        schema: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' }
+            },
+            required: [ 'name' ],
+            additionalProperties: false
+        },
+        prepareData: (body) => {
+            initValidator('projects')
+            if(!dataConfig.projects._validate(body)) return { error: 'data does not match the project schema' }
+            return null
+        }
     }
 }
 

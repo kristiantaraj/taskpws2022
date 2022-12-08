@@ -8,6 +8,13 @@ const getAggregation = (collectionName) => {
     return []
 }
 
+const getFiltering = (collectionName, filter) => {
+    if(dataConfig[collectionName] && dataConfig[collectionName].filtering) {
+        return dataConfig[collectionName].filtering(filter)
+    }
+    return null
+}
+
 const alterInputData = (collectionName, body) => {
     if(dataConfig[collectionName] && dataConfig[collectionName].prepareData) {
         let err = dataConfig[collectionName].prepareData(body)
@@ -27,16 +34,16 @@ module.exports = (req, res) => {
     switch(req.method) {
         case 'GET':
             aggr.length = 0
+            if(_id) {
+                aggr.push({ $match: { _id }})
+            }
+
             aggr = aggr.concat(getAggregation(collectionName))
 
             let filter = req.query.filter
             if(filter) {
-                aggr.push({
-                    $match: { $or: [
-                        { firstName: { $regex: '.*' + filter + '.*', $options: 'i' }},
-                        { lastName: { $regex: '.*' + filter + '.*', $options: 'i' }}
-                    ]}
-                })
+                let matching = getFiltering(collectionName, filter)
+                if(matching) aggr.push(matching)
             }
 
             let limit = req.query.limit
@@ -48,23 +55,31 @@ module.exports = (req, res) => {
             }
 
             collection.aggregate(aggr).toArray((err, data) => {
-                res.json(data)
+                if(!err) {
+                    res.json(data)
+                } else {
+                    res.status(400).json({ error: 'Error retrieving data' })
+                }
             })        
             break
         case 'POST':
             err = alterInputData(collectionName, req.body)
             if(err) {
-                res.status(400).json(err)
+                res.status(422).json(err)
                 break
             }
             collection.insertOne(req.body, (err, data) => {
-                res.json(data)    
+                if(!err) {
+                    res.json(data)
+                } else {
+                    res.status(400).json({ error: 'Error inserting data' })
+                }
             })
             break
         case 'PUT':
             err = alterInputData(collectionName, req.body)
             if(err) {
-                res.status(400).json(err)
+                res.status(422).json(err)
                 break
             }
             collection.findOneAndUpdate({ _id: _id }, { $set: req.body }, { returnDocument: 'after' }, (err, data) => {
@@ -72,13 +87,19 @@ module.exports = (req, res) => {
                     delete data.value
                     // without the code below the result contains complete data of updated object,
                     // maybe with sensible information
+                    res.json(data)    
+                } else {
+                    res.status(400).json({ error: 'Error updating data' })                    
                 }
-                res.json(data)    
             })
             break
         case 'DELETE':
             collection.deleteOne({ _id: _id }, (err, data) => {
-                res.json(data)
+                if(!err) {
+                    res.json(data)
+                } else {
+                    res.status(400).json({ error: 'Error deleting data' })
+                }
             })
             break
         default:
