@@ -21,7 +21,7 @@ const dataConfig = module.exports = {
         },
         prepareData: (body) => {
             initValidator('persons')
-            if(!dataConfig.persons._validate(body)) return { error: 'Person data is invalid' }
+            if(!dataConfig.persons._validate(body)) return { error: 'data does not match the person schema' }
 
             if(body.yearOfBirth < 100) {
                 body.yearOfBirth = 1900 + body.yearOfBirth
