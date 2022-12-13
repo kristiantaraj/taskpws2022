@@ -7,11 +7,14 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
     ctrl.editedRow = -1
     ctrl.projects = []
     ctrl.project = {}
+    ctrl.persons = []
     ctrl.limit = 5
     ctrl.filter = ''
 
     const clearProject = {
-        name: ''
+        name: '',
+        manager: null,
+        members: []
     }
 
     Object.assign(ctrl.project, clearProject)
@@ -20,6 +23,7 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
         $http.get(endpoint + '?limit=' + ctrl.limit + '&filter=' + ctrl.filter).then(
             function(res) {
                 ctrl.projects = res.data
+                console.log(JSON.stringify(res.data))
                 if(withAlert) {
                     common.alert('View refreshed, ' + ctrl.projects.length + ' projects displayed')
                 }
@@ -84,6 +88,15 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
             }
         )
     }
+
+    $http.get('/api/persons').then(
+        function(res) {
+            ctrl.persons = res.data
+        },
+        function(err) {
+            common.alert('Error: ' + err.data.error, 'danger')
+        }
+    )
 
     ctrl.refresh()
 }])

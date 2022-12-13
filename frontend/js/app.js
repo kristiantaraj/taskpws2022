@@ -1,4 +1,4 @@
-const app = angular.module('pws2022', [ 'ngRoute', 'ngSanitize', 'ngAnimate', 'ui.bootstrap', 'httpLoadingInterceptor', 'cogAlert' ])
+const app = angular.module('pws2022', [ 'ngRoute', 'ngSanitize', 'ngAnimate', 'ui.bootstrap', 'httpLoadingInterceptor', 'cogAlert', 'ct-ui.select' ])
 
 // router
 

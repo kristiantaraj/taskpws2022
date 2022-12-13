@@ -54,7 +54,7 @@ const dataConfig = module.exports = {
               name: { type: 'string' }
             },
             required: [ 'name' ],
-            additionalProperties: false
+            additionalProperties: true
         },
         prepareData: (body) => {
             initValidator('projects')
