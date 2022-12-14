@@ -1,6 +1,8 @@
 const ajv = require('ajv')
 const ajvFormats = require('ajv-formats')
 
+const db = require('./db')
+
 const dataConfig = module.exports = {
 
     persons: {
@@ -41,6 +43,7 @@ const dataConfig = module.exports = {
             { $sort: { name: 1 } },
             { $lookup: { from: "persons", localField: "manager", foreignField: "_id", as: "manager" } },
             { $unwind: { path: "$manager", preserveNullAndEmptyArrays: true } },
+            { $lookup: { from: "persons", localField: "members", foreignField: "_id", as: "members" } },
             { $project: { "manager.password": false } }
           ],
           filtering: (filter) => {
@@ -59,6 +62,14 @@ const dataConfig = module.exports = {
         prepareData: (body) => {
             initValidator('projects')
             if(!dataConfig.projects._validate(body)) return { error: 'data does not match the project schema' }
+            try {
+                if(body.manager) body.manager = db.ObjectId(body.manager)
+                body.members.forEach(function(el, index, arr) {
+                    arr[index] = db.ObjectId(el)
+                })
+            } catch(ex) {
+                return { error: 'data does not include proper _ids' }
+            }
             return null
         }
     }

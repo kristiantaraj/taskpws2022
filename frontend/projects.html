@@ -31,10 +31,10 @@
                 <input class="form-control" ng-model="ctrl.project.name" ng-if="ctrl.editedRow==$index"/>
             </td>
             <td>
-                <div ng-bind="project.manager" ng-if="ctrl.editedRow!=$index"></div>
+                <div ng-bind="ctrl.abbrevPerson(project.manager)" ng-if="ctrl.editedRow!=$index"></div>
             </td>
             <td>
-                <div ng-bind="project.members" ng-if="ctrl.editedRow!=$index"></div>
+                <div ng-bind="ctrl.abbrevPersons(project.members)" ng-if="ctrl.editedRow!=$index"></div>
             </td>
             <td nowrap>
                 <button class="btn btn-success fa fa-edit" ng-click="ctrl.edit($index)" ng-disabled="ctrl.editedRow>=0" ng-if="ctrl.editedRow!=$index"></button>
@@ -48,7 +48,7 @@
             <td><input type="text" class="form-control" placeholder="name" ng-model="ctrl.project.name" ng-if="ctrl.editedRow==ctrl.projects.length"/></td>
             <td>
                 <ui-select ng-model="ctrl.project.manager" close-on-select="true" ng-if="ctrl.editedRow==ctrl.projects.length">
-                    <ui-select-match>{{ctrl.project.manager.firstName.substring(0,1)+'.'+ctrl.project.manager.lastName}}</ui-select-match>
+                    <ui-select-match>{{ctrl.abbrevPerson(ctrl.project.manager)}}</ui-select-match>
                     <ui-select-choices repeat="person in (ctrl.persons | filter: $select.search) track by person._id">
                       <div ng-bind="person.firstName+' '+person.lastName"></div>
                       <small ng-bind="person.email"></small>

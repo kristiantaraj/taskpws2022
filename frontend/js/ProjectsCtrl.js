@@ -23,7 +23,6 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
         $http.get(endpoint + '?limit=' + ctrl.limit + '&filter=' + ctrl.filter).then(
             function(res) {
                 ctrl.projects = res.data
-                console.log(JSON.stringify(res.data))
                 if(withAlert) {
                     common.alert('View refreshed, ' + ctrl.projects.length + ' projects displayed')
                 }
@@ -76,7 +75,14 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
     } 
 
     ctrl.add = function() {
-        $http.post(endpoint, ctrl.project).then(
+        let projectToSend = {
+            name: ctrl.project.name,
+            manager: ctrl.project.manager ? ctrl.project.manager._id : null,
+            members: ctrl.project.members ? ctrl.project.members.map(function(el) {
+                return el._id
+            }) : []
+        }
+        $http.post(endpoint, projectToSend).then(
             function(res) {
                 ctrl.refresh()
                 ctrl.editedRow = -1
@@ -87,6 +93,14 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
                 common.alert('Project cannot be added: ' + err.data.error, 'danger')
             }
         )
+    }
+
+    ctrl.abbrevPerson = function(person) {
+        return person ? person.firstName.substring(0,1) + '.' + person.lastName : null
+    }
+
+    ctrl.abbrevPersons = function(persons) {
+        return persons.map(function(el) { return ctrl.abbrevPerson(el) }).join(' ')
     }
 
     $http.get('/api/persons').then(
