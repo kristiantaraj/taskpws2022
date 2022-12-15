@@ -134,6 +134,6 @@ app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', 'common',
             ctrl.loggedUser = res.data
             rebuildMenu()
         },
-        function(err) { Alerting.addDanger('Whoami failed, cannot continue') }
+        function(err) { common.alert('Whoami failed, cannot continue', 'danger') }
     )    
 }])
