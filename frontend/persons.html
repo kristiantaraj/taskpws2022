@@ -4,6 +4,8 @@
 
 <div>
     <form class="form-inline">
+        <span class="label label-primary" style="font-size: large;" ng-bind="ctrl.personsCount"></span>
+        <span class="label label-success" style="font-size: large;" ng-bind="ctrl.personsFiltered"></span>
         <i class="fa fa-hashtag"></i>
         <input style="width: 10%" class="form-control" type="number" ng-model="ctrl.limit" ng-change="ctrl.refresh()"/>
         <i class="fa fa-search"></i>
@@ -16,17 +18,15 @@
 <div>
     <table class="table table-stripped">
         <tr>
-            <th>id</th>
-            <th>first name</th>
-            <th>last name</th>
-            <th>year of birth</th>
-            <th>email</th>
-            <th>
+            <th width="25%">first name</th>
+            <th width="25%">last name</th>
+            <th width="10%">year of birth</th>
+            <th width="30%">email</th>
+            <th width="10%">
                 <button class="btn btn-default fa fa-refresh" ng-click="ctrl.refresh(true)"></button>
             </th>
         </tr>
         <tr ng-repeat="person in ctrl.persons">
-            <td ng-bind="person._id"></td>
             <td>
                 <div ng-bind="person.firstName" ng-if="ctrl.editedRow!=$index"></div>
                 <input class="form-control" ng-model="ctrl.person.firstName" ng-if="ctrl.editedRow==$index"/>
@@ -51,7 +51,6 @@
             </td>
         </tr>
         <tr>
-            <td></td>
             <td><input type="text" class="form-control" placeholder="first name" ng-model="ctrl.person.firstName" ng-if="ctrl.editedRow==ctrl.persons.length"/></td>
             <td><input type="text" class="form-control" placeholder="last name" ng-model="ctrl.person.lastName" ng-if="ctrl.editedRow==ctrl.persons.length"/></td>
             <td><input type="number" class="form-control" ng-model="ctrl.person.yearOfBirth" ng-if="ctrl.editedRow==ctrl.persons.length"/></td>

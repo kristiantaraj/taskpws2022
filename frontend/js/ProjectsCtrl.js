@@ -6,6 +6,8 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
 
     ctrl.editedRow = -1
     ctrl.projects = []
+    ctrl.projectsCount = 0
+    ctrl.projectsFiltered = 0
     ctrl.project = {}
     ctrl.persons = []
     ctrl.limit = 5
@@ -22,7 +24,9 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
     ctrl.refresh = function(withAlert = false) {
         $http.get(endpoint + '?limit=' + ctrl.limit + '&filter=' + ctrl.filter).then(
             function(res) {
-                ctrl.projects = res.data
+                ctrl.projects = res.data.records
+                ctrl.projectsCount = res.data.all
+                ctrl.projectsFiltered = res.data.filtered
                 if(withAlert) {
                     common.alert('View refreshed, ' + ctrl.projects.length + ' projects displayed')
                 }
@@ -36,10 +40,19 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
     ctrl.edit = function(index) {
         ctrl.editedRow = index
         ctrl.project.name = ctrl.projects[index].name
+        ctrl.project.manager = ctrl.projects[index].manager
+        ctrl.project.members = ctrl.projects[index].members
     }
 
     ctrl.confirm = function(_id) {
-        $http.put(endpoint + '?_id=' + _id, ctrl.project).then(
+        let projectToSend = {
+            name: ctrl.project.name,
+            manager: ctrl.project.manager ? ctrl.project.manager._id : null,
+            members: ctrl.project.members ? ctrl.project.members.map(function(el) {
+                return el._id
+            }) : []
+        }
+        $http.put(endpoint + '?_id=' + _id, projectToSend).then(
             function(res) {
                 ctrl.refresh()
                 common.alert('Project updated')
@@ -105,7 +118,7 @@ app.controller('ProjectsCtrl', [ '$http', 'common', function($http, common) {
 
     $http.get('/api/persons').then(
         function(res) {
-            ctrl.persons = res.data
+            ctrl.persons = res.data.records
         },
         function(err) {
             common.alert('Error: ' + err.data.error, 'danger')

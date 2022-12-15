@@ -8,7 +8,7 @@ const dataConfig = module.exports = {
     persons: {
         aggregation: [
             { $project: { password: false } },
-            { $sort: { lastName: 1, firstName: 1 } }
+            { $sort: { firstName: 1, lastName: 1  } }
         ],
         filtering: (filter) => { return {
             $match: { $or: [

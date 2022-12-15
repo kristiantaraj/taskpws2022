@@ -42,7 +42,7 @@ const generatePersons = (amount, nextTick) => {
         for(let i = 0; i < amount; i++) {
             const firstName = pickRandom(firstNames)
             const lastName = pickRandom(lastNames)
-            const yearOfBirth = 1920 + Math.floor(100 * Math.random())
+            const yearOfBirth = 1920 + Math.floor(80 * Math.random())
             const email = firstName.toLowerCase() + '.' + lastName.toLowerCase() + '@pws2022.edu'  
             persons.push({ firstName, lastName, yearOfBirth, email })
         }

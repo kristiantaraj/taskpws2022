@@ -41,8 +41,9 @@ module.exports = (req, res) => {
             aggr = aggr.concat(getAggregation(collectionName))
 
             let filter = req.query.filter
+            let matching = null
             if(filter) {
-                let matching = getFiltering(collectionName, filter)
+                matching = getFiltering(collectionName, filter)
                 if(matching) aggr.push(matching)
             }
 
@@ -54,9 +55,23 @@ module.exports = (req, res) => {
                 }
             }
 
-            collection.aggregate(aggr).toArray((err, data) => {
+            let facet = {
+                all: [ { $count: 'count' }],
+                filtered: filter ? [ matching, { $count: 'count' } ] : [ { $count: 'count' } ],
+                records: aggr
+            }
+
+            collection.aggregate([
+                { $facet: facet },
+                { $unwind: { path: '$all', preserveNullAndEmptyArrays: true } },
+                { $unwind: { path: '$filtered', preserveNullAndEmptyArrays: true } }
+            ]).toArray((err, data) => {
                 if(!err) {
-                    res.json(data)
+                    res.json({
+                        all: data.length > 0 && data[0].all ? data[0].all.count : 0,
+                        filtered: data.length > 0 && data[0].filtered ? data[0].filtered.count : 0,
+                        records: data.length > 0 && data[0].records ? data[0].records : []
+                    })
                 } else {
                     res.status(400).json({ error: 'Error retrieving data' })
                 }

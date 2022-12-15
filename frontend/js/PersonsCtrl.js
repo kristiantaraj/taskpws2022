@@ -6,6 +6,8 @@ app.controller('PersonsCtrl', [ '$http', 'common', function($http, common) {
 
     ctrl.editedRow = -1
     ctrl.persons = []
+    ctrl.personsCount = 0
+    ctrl.personsFiltered = 0
     ctrl.person = {}
     ctrl.limit = 5
     ctrl.filter = ''
@@ -22,7 +24,9 @@ app.controller('PersonsCtrl', [ '$http', 'common', function($http, common) {
     ctrl.refresh = function(withAlert = false) {
         $http.get(endpoint + '?limit=' + ctrl.limit + '&filter=' + ctrl.filter).then(
             function(res) {
-                ctrl.persons = res.data
+                ctrl.persons = res.data.records
+                ctrl.personsCount = res.data.all
+                ctrl.personsFiltered = res.data.filtered
                 if(withAlert) {
                     common.alert('View refreshed, ' + ctrl.persons.length + ' persons displayed')
                 }
