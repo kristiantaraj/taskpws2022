@@ -2,4 +2,8 @@
     Tasks
 </h1>
 
+<select ng-model="ctrl.selectedProjectId" ng-change="ctrl.test()">
+    <option ng-repeat="project in ctrl.projects" ng-bind="project.name" ng-value="project._id"></option>
+</select>
+
 <p ng-repeat="task in ctrl.tasks" ng-bind="task.name"></p>
