@@ -72,6 +72,12 @@ const dataConfig = module.exports = {
             }
             return null
         }
+    },
+
+    tasks: {
+        filtering: (filter) => {
+            return { $match: { project: db.ObjectId(filter) } }
+        }
     }
 }
 
