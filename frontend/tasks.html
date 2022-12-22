@@ -2,8 +2,12 @@
     Tasks
 </h1>
 
-<select ng-model="ctrl.selectedProjectId" ng-change="ctrl.test()">
-    <option ng-repeat="project in ctrl.projects" ng-bind="project.name" ng-value="project._id"></option>
-</select>
+<div style="float: right;">
+    <form class="form-inline">
+        <select class="form-control" ng-model="ctrl.selectedProjectId" ng-change="ctrl.loadTasks()">
+            <option ng-repeat="project in ctrl.projects" ng-bind="project.name" ng-value="project._id"></option>
+        </select>
+    </form>
+</div>
 
 <p ng-repeat="task in ctrl.tasks" ng-bind="task.name"></p>
