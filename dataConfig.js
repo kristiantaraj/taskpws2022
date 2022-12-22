@@ -75,12 +75,16 @@ const dataConfig = module.exports = {
     },
 
     tasks: {
+        aggregation: [
+            { $sort: { creationTime: -1 } }
+        ],
         filtering: (filter) => {
             return { $match: { project: db.ObjectId(filter) } }
         },
         prepareData: (body) => {
             try {
                 body.project = db.ObjectId(body.project)
+                body.creationTime = Date.now()
             } catch(ex) {
                 return { error: 'task does not include a proper project id' }
             }

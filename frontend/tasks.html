@@ -10,7 +10,14 @@
     </form>
 </div>
 
-<p ng-repeat="task in ctrl.tasks" ng-bind="task.name"></p>
+<table class="table table-stripped">
+    <tr>
+        <th>Name</th><th>Creation time</th>
+    </tr>
+    <tr ng-repeat="task in ctrl.tasks">
+        <td ng-bind="task.name"></td><td ng-bind="task.creationTime | date:'yyyy-MM-dd HH:mm:ss Z'"></td>
+    </tr>
+</table>
 
 <form class="form-inline">
     <input class="form-control" type="text" placeholder="name of the task" ng-model="ctrl.task.name"/>
