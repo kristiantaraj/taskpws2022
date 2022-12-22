@@ -77,8 +77,16 @@ const dataConfig = module.exports = {
     tasks: {
         filtering: (filter) => {
             return { $match: { project: db.ObjectId(filter) } }
+        },
+        prepareData: (body) => {
+            try {
+                body.project = db.ObjectId(body.project)
+            } catch(ex) {
+                return { error: 'task does not include a proper project id' }
+            }
+            return null
         }
-    }
+   }
 }
 
 let _ajv = null

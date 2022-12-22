@@ -4,10 +4,15 @@
 
 <div style="float: right;">
     <form class="form-inline">
-        <select class="form-control" ng-model="ctrl.selectedProjectId" ng-change="ctrl.loadTasks()">
+        <select class="form-control" ng-model="ctrl.task.project" ng-change="ctrl.loadTasks()">
             <option ng-repeat="project in ctrl.projects" ng-bind="project.name" ng-value="project._id"></option>
         </select>
     </form>
 </div>
 
 <p ng-repeat="task in ctrl.tasks" ng-bind="task.name"></p>
+
+<form class="form-inline">
+    <input class="form-control" type="text" placeholder="name of the task" ng-model="ctrl.task.name"/>
+    <button class="btn btn-primary fa fa-plus" ng-click="ctrl.addTask()"></button>
+</form>
