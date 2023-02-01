@@ -41,7 +41,7 @@ app.service('common', [ '$uibModal', 'Alerting', function($uibModal, Alerting) {
             function() { nextTick(null) }
         )
     }
-    
+
     // confirmation dialog function
     common.simpleDialog = function(title, body, ok, cancel, nextTick) {
         let options = { title, body, ok, cancel }
@@ -56,8 +56,8 @@ app.service('common', [ '$uibModal', 'Alerting', function($uibModal, Alerting) {
                 <button class="btn btn-success fa fa-check" type="button" ng-click="ctrl.dialog.close(true)" ng-if="ctrl.options.ok"></button>
                 <button class="btn btn-danger fa fa-times" type="button" ng-click="ctrl.dialog.dismiss()" ng-if="ctrl.options.cancel"></button>
             </div>
-    
-        </form>        
+
+        </form>
         `, null, [ '$uibModalInstance', 'options', function($uibModalInstance, options) {
             this.options = options
             this.dialog = $uibModalInstance
@@ -123,18 +123,18 @@ app.controller('MainCtrl', [ '$http', '$location', '$scope', 'routes', 'common',
     $scope.$on('$routeChangeSuccess', function () {
         ctrl.isCollapsed = true
     })
-    
+
     ctrl.navClass = function(page) {
         return page === $location.path() ? 'active' : ''
-    }     
+    }
 
     // whoami - once on the start
-    
+
     $http.get('/auth').then(
         function(res) {
             ctrl.loggedUser = res.data
             rebuildMenu()
         },
         function(err) { common.alert('Whoami failed, cannot continue', 'danger') }
-    )    
+    )
 }])

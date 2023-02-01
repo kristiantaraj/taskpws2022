@@ -12,10 +12,21 @@
 
 <table class="table table-stripped">
     <tr>
-        <th>Name</th><th>Creation time</th>
+        <th>Name</th><th>Creation time</th><th>Creator</th><th>Taken over</th><th>Done/Time</th>
     </tr>
     <tr ng-repeat="task in ctrl.tasks">
-        <td ng-bind="task.name"></td><td ng-bind="task.creationTime | date:'yyyy-MM-dd HH:mm:ss Z'"></td>
+        <td ng-bind="task.name"></td>
+        <td ng-bind="task.creationTime | date:'yyyy-MM-dd HH:mm:ss Z'"></td>
+        <td ng-bind="task.creator.username"></td>
+        <td>
+            <span ng-bind="task.responsible.username"></span>
+            <button ng-if="!task.responsible" ng-click="ctrl.updateTaskResponsible(task._id,task.project)">Take Over</button>
+        </td>
+        <td>
+            <span ng-bind="task.done"></span>
+            <button ng-if="!task.done" ng-click="ctrl.updateDone(task._id,task.project)">Done</button>
+        </td>
+
     </tr>
 </table>
 

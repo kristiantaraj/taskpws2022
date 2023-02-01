@@ -4,7 +4,7 @@
 
 #### Installation
 
-* run MongoDB server or use a cloud database (e.g. using https://cloud.mongodb.com/)  
+* run MongoDB server or use a cloud database (e.g. using https://cloud.mongodb.com/)
 * git clone https://gitlab.com:mariusz.jarocki/pws2022.git
 * cd pws2022
 * npm install
