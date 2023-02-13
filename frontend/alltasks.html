@@ -1,0 +1,34 @@
+<h1>
+    All Tasks
+</h1>
+<div>
+    <form class="form-inline">
+        <i class="fa fa-hashtag"></i>
+        <input style="width: 10%" class="form-control" type="number" ng-model="ctrl.limit" ng-change="ctrl.refresh()"/>
+        <i class="fa fa-search"></i>
+        <input style="width: 20%" class="form-control" type="text" ng-model="ctrl.filter" ng-change="ctrl.refresh()"/>
+    </form>
+</div>
+<div style="float: right;">
+    <form class="form-inline">
+        <button class="btn btn-primary" ng-click="ctrl.loadAllTasks()">All tasks</button>
+        <select class="form-control" ng-model="ctrl.task.project" ng-change="ctrl.loadTasks()">
+            <option ng-repeat="project in ctrl.projects" ng-bind="project.name" ng-value="project._id"></option>
+        </select>
+    </form>
+</div>
+
+<table class="table table-stripped">
+    <tr>
+        <th>Task Name</th><th>Status</th>
+    </tr>
+    <tr ng-repeat="task in ctrl.tasks">
+        <td ng-bind="task.name"></td>
+        <td>
+            <span ng-if="task.done">Done</span>
+            <span ng-if="task.responsible.username && !task.done">In Progress</span>
+            <span ng-if="!task.responsible.username">Free</span>
+          </td>
+
+    </tr>
+</table>

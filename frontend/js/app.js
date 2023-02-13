@@ -6,7 +6,8 @@ app.constant('routes', [
     { route: '/', templateUrl: 'home.html', controller: 'HomeCtrl', controllerAs: 'ctrl', menu: '<i class="fa fa-lg fa-home"></i>' },
     { route: '/persons', templateUrl: 'persons.html', controller: 'PersonsCtrl', controllerAs: 'ctrl', menu: 'Persons' },
     { route: '/projects', templateUrl: 'projects.html', controller: 'ProjectsCtrl', controllerAs: 'ctrl', menu: 'Projects' },
-    { route: '/tasks', templateUrl: 'tasks.html', controller: 'TasksCtrl', controllerAs: 'ctrl', menu: 'Tasks' }
+    { route: '/tasks', templateUrl: 'tasks.html', controller: 'TasksCtrl', controllerAs: 'ctrl', menu: 'Tasks' },
+    { route: '/alltasks', templateUrl: 'alltasks.html', controller: 'AlltasksCtrl', controllerAs: 'ctrl', menu: 'All Tasks' }
 ])
 
 app.config(['$routeProvider', '$locationProvider', 'routes', function($routeProvider, $locationProvider, routes) {
